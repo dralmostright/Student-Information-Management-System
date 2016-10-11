@@ -1,0 +1,26 @@
+Finally, i solved the problem. I placed the `nitm.sql` file in `bin` file of 
+the `mysql` folder and used the following syntax.
+
+G:\>C:\xampp\mysql\bin\mysql -u root
+
+C:\wamp\bin\mysql\mysql5.0.51b\bin>mysql -u root nitm < nitm.sql
+
+No, you should run mysql -u root -p in bash, not at the MySQL command-line. 
+If you are in mysql, you can exit by typing exit.
+
+First, Identify the user you are logged in as:
+
+ select user();
+ select current_user();
+The result for the first command is what you attempted to login as, 
+the second is what you actually connected as. Confirm that you are 
+logged in as root@localhost in mysql.
+
+Grant_priv to root@localhost. Here is how you can check.
+
+
+You can see that the Grant_priv is set to N for root@localhost. This needs to be Y. Below is how to fixed this:
+
+UPDATE mysql.user SET Grant_priv='Y', Super_priv='Y' WHERE User='root';
+FLUSH PRIVILEGES;
+GRANT ALL ON *.* TO 'root'@'localhost';
